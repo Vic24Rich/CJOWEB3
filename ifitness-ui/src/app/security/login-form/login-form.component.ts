@@ -6,6 +6,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { AuthService } from '../auth.service';
 
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -25,13 +26,21 @@ import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 export class LoginFormComponent {
 
   jwtPayload: any;
+   msg: any;
 
-  constructor(private auth: AuthService) {
-    this.jwtPayload = this.auth.jwtPayload;
-  }
+  constructor(
+    private auth: AuthService,
+    private router: Router
+  ) {}
 
-  login(user: string, password: string): void {
-    this.auth.login(user, password);
+  login(user: string, password: string) {
+    this.auth.login(user, password)
+    .then(() => {
+      this.router.navigate(['/activities']);
+    })
+    .catch(() => {
+      this.msg = 'Usuário e/ou senha inválida!';
+    });
   }
 
 }

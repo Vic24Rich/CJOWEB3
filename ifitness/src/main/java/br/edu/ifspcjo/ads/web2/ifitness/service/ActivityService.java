@@ -1,5 +1,6 @@
 package br.edu.ifspcjo.ads.web2.ifitness.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
@@ -48,5 +49,14 @@ public class ActivityService {
 				.orElseThrow(() -> new EmptyResultDataAccessException(1));
 		return activitySaved;
 	}
+	
+	public List<Activity> findByUser(String email){
+		Optional<User> user = userRepository.findByEmail(email);
+		if(user.isPresent()) {
+			return activityRepository.findByUser(user.get());
+		}
+		return null;
+	}
+	
 
 }

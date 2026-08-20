@@ -34,7 +34,10 @@ export class AuthService {
       console.log(response);
       this.storeToken(response['accessToken']);
     } catch (response: any) {
-      console.log(response);
+      if (response.status === 400 && response.error === 'invalid_grant') {
+        return Promise.reject('Usuário e/ou senha inválida!');
+      }
+      return Promise.reject(response);
     };
   }
 
